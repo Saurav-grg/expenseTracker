@@ -7,6 +7,12 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 $loggedInUserId = $_SESSION['user_id'];
+  $curUserName = $_SESSION['name'];
+
+// if(isset($_SESSION['name'])){
+
+// }
+
 include 'connect.php';
 if(isset($_POST['insert-btn'])){
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['date-inp']) && isset($_POST['category-select']) && isset($_POST['amount-inp'])) {
@@ -33,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['date-inp']) && isset($
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="main.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
    
     
 </head>
@@ -60,20 +66,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['date-inp']) && isset($
         </div>
         <button type="button" id="popup-btn" onclick="insertForm()">Add Expense</button>
 
-        <h3>Expense Log</h3>
-        <table class="table">
+        <h3><?php echo $curUserName."'s";?> expense Log :</h3>
+        <table class="table" >
           <thead>
             <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Category</th>
-              <th scope="col">Amount</th>
+              <th >Date</th>
+              <th >Category</th>
+              <th >Amount</th>
 
-              <th scope="col"></th>
+              <th ></th>
             </tr>
           </thead>
           <tbody>
          <?php
-            $sql1 = "SELECT `expense_id`,`expense_date`, `expense_category`, `amount` FROM `expenses` WHERE user_id = {$_SESSION['user_id']}";
+            $sql1 = "SELECT `expense_id`,`expense_date`, `expense_category`, `amount` FROM `expenses` WHERE 
+            user_id = {$_SESSION['user_id']}";
             $result1 = mysqli_query($conn,$sql1);
             $totalAmt = 0;
             if($result1){
@@ -85,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['date-inp']) && isset($
                     $amt = $row['amount'];
                     $totalAmt += $amt;
                     echo ' <tr>
-                    <th scope="row" id="">'.$date.'</th>
+                    <th >'.$date.'</th>
                     <td>'.$category.'</td>
                     <td>'.$amt.'</td>
                     <td><button onclick="openUpdateForm('.$expId.')">Update</button>

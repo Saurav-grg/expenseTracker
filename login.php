@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 $emailInput = mysqli_real_escape_string($conn, $_POST['userEmail']);
 $passwordInput = $_POST['password-inp'];
 
-$sql = "SELECT user_id, email, password FROM users WHERE email = '$emailInput'";
+$sql = "SELECT user_id, fname,email, password FROM users WHERE email = '$emailInput'";
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
@@ -14,6 +14,8 @@ if ($result) {
         messageLog("login successful!") ;
         session_start();  // Start the session
         $_SESSION['user_id'] = $row['user_id'];  // Store user ID in the session
+        $_SESSION['name'] = $row['fname'];
+        // messageLog("user name is {$_SESSION['fname']}");
         header("Location: main.php");  // Redirect to the home page
         exit();
     } else {
